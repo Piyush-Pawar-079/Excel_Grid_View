@@ -1,0 +1,315 @@
+:root {
+    --bg-main: #ffffff;
+    --bg-toolbar: #f3f3f3;
+    --bg-statusbar: #f3f3f3;
+
+    --text-main: #202124;
+    --text-muted: #5f6368;
+
+    --border-color: #d9d9d9;
+
+    --accent: #21A366;
+    --accent-hover: #107c41;
+
+    --grid-bg: #ffffff;
+    --grid-text: #202124;
+    --grid-border: #d9d9d9;
+
+    --font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: var(--font-family);
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+#appContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+/* ==========================
+   Toolbar
+   ========================== */
+
+#toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    height: 40px;
+    padding: 0 12px;
+
+    background: var(--bg-toolbar);
+
+    border-bottom: 1px solid var(--border-color);
+
+    box-shadow: none;
+}
+
+.actions {
+    display: flex;
+    gap: 4px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    background: white;
+    color: var(--text-main);
+
+    border: 1px solid var(--border-color);
+
+    padding: 5px 12px;
+
+    border-radius: 2px;
+
+    font-size: 12px;
+    font-family: "Segoe UI";
+    font-weight: 400;
+
+    cursor: pointer;
+
+    transition: background 0.15s;
+}
+
+.btn:hover {
+    background: #f8f8f8;
+}
+
+.btn:active {
+    background: #ececec;
+    transform: none;
+}
+
+/* ==========================
+   Grid Area
+   ========================== */
+
+#gridWrapper {
+    position: relative;
+
+    flex: 1;
+
+    background: #ffffff;
+
+    display: flex;
+
+    padding: 0;
+
+    overflow: hidden;
+}
+
+#scrollBox {
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+
+    position: relative;
+
+    background: white;
+
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#spacer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#gridCanvas {
+    position: sticky;
+    top: 0;
+    left: 0;
+    display: block;
+
+    background: white;
+
+    outline: none;
+
+    border-radius: 0;
+}
+
+/* ==========================
+   Cell Editor
+   ========================== */
+
+#cellEditor {
+    position: absolute;
+
+    box-sizing: border-box;
+
+    border: 2px solid #21A366;
+
+    outline: none;
+
+    font-size: 14px;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    padding: 0 4px;
+
+    background: white;
+
+    color: #202124;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    z-index: 100;
+}
+
+#cellEditor.hidden {
+    display: none;
+}
+
+/* ==========================
+   Status Bar
+   ========================== */
+
+#statusbar {
+    display: flex;
+    align-items: center;
+
+    height: 32px;
+
+    padding: 0 12px;
+
+    background: #f3f3f3;
+
+    border-top: 1px solid var(--border-color);
+
+    font-size: 12px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #444;
+}
+
+#selectionRangeDiv {
+    min-width: 70px;
+    font-weight: 400;
+    color: #202124;
+}
+
+/* ==========================
+   Formula Area
+   ========================== */
+
+.formula-preview {
+    flex: 1;
+
+    margin-left: 12px;
+
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+
+    background: white;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 0;
+
+    padding: 0 8px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fx-icon {
+    font-style: italic;
+    font-weight: 600;
+
+    color: #21A366;
+
+    margin-right: 6px;
+
+    user-select: none;
+}
+
+#currentInputField {
+    color: #202124;
+
+    font-family: "Segoe UI";
+}
+
+/* ==========================
+   Statistics
+   ========================== */
+
+#statsDiv {
+    display: flex;
+
+    gap: 4px;
+
+    margin-left: auto;
+}
+
+.stat-pill {
+    background: white;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 2px;
+
+    padding: 2px 8px;
+
+    color: #444;
+
+    font-size: 11px;
+}
+
+.stat-pill:hover {
+    background: #f7f7f7;
+}
+
+.stat-pill:empty {
+    display: none;
+}
+
+/* ==========================
+   Scrollbars
+   ========================== */
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f3f3f3;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c9c9c9;
+    border: 2px solid #f3f3f3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b0b0b0;
+}

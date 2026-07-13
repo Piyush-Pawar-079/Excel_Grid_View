@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NexusGrid - Premium Data Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <div id="appContainer">
+        <!-- Modern Header / Toolbar -->
+        <header id="toolbar">
+            <div class="actions">
+                <button id="undoBtn" class="btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+                    Undo
+                </button>
+                <button id="redoBtn" class="btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"></path><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path></svg>
+                    Redo
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Grid Area -->
+        <main id="gridWrapper">
+            <div id="scrollBox">
+                <div id="spacer"></div>
+                <canvas id="gridCanvas"></canvas>
+            </div>
+            <input id="cellEditor" type="text" class="hidden" />
+        </main>
+
+        <!-- Modern Status Bar -->
+        <footer id="statusbar">
+            <div id="selectionRangeDiv" class="status-item">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                <span id="selectionRangeSpan"></span>
+            </div>
+            <div id="currentInputDiv" class="status-item formula-preview">
+                <span class="fx-icon">fx</span>
+                <span id="currentInputField"></span>
+            </div>
+            <div id="statsDiv">
+                <span id="statCount" class="stat-pill"></span>
+                <span id="statSum" class="stat-pill"></span>
+                <span id="statAvg" class="stat-pill"></span>
+                <span id="statMin" class="stat-pill"></span>
+                <span id="statMax" class="stat-pill"></span>
+            </div>
+        </footer>
+    </div>
+    <script src="./dist/index.js" type="module"></script>
+</body>
+</html>

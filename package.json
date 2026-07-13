@@ -1,0 +1,16 @@
+{
+  "name": "excel-grid",
+  "version": "1.0.0",
+  "description": "Excel-like grid application",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --outfile=dist/index.js --sourcemap",
+    "watch": "esbuild src/main.ts --bundle --outfile=dist/index.js --sourcemap --watch",
+    "start": "http-server . -p 8080 -c-1",
+    "generate": "node generateData.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.0",
+    "http-server": "^14.1.1",
+    "typescript": "^5.3.3"
+  }
+}
