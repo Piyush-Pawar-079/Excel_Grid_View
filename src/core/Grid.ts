@@ -9,8 +9,6 @@ import { EditCellCommand } from '../commands/EditCellCommand';
 import { CellModel } from '../models/CellModel';
 import { FormulaEvaluator } from '../formula/FormulaEvaluator';
 import { CellUtils } from '../utils/CellUtils';
-import { ResizeColumnCommand } from '../commands/ResizeColumnCommand';
-import { ResizeRowCommand } from '../commands/ResizeRowCommand';
 import { PointerHandler } from '../handlers/PointerHandler';
 import { ColumnResizeAction } from '../actions/ColumnResizeAction';
 import { RowResizeAction } from '../actions/RowResizeAction';
@@ -232,7 +230,6 @@ export class Grid {
     
     public handleArrowKeys(e: KeyboardEvent) {
         let { activeRow, activeCol } = this.selection;
-        
         if (e.key === 'ArrowUp') activeRow = Math.max(0, activeRow - 1);
         if (e.key === 'ArrowDown') activeRow = Math.min(this.store.getRowCount() - 1, activeRow + 1);
         if (e.key === 'ArrowLeft') activeCol = Math.max(0, activeCol - 1);
@@ -241,7 +238,6 @@ export class Grid {
         if (e.shiftKey) {
             this.selection.isSelecting = true;
             this.selection.updateSelection(activeRow, activeCol);
-            this.selection.isSelecting = false; // end right away just for range expansion
         } else {
             this.selection.setActiveCell(activeRow, activeCol);
         }
