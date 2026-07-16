@@ -91,7 +91,7 @@ export class Grid {
     public commitEdit(row: number, col: number, rawValue: string) {
         const newCell = this.evaluateCell(row, col, rawValue);
         
-        const cmd = new EditCellCommand(this.store, row, col, newCell, (r, c, val) => this.evaluateCell(r, c, val));
+        const cmd = new EditCellCommand(this.store, row, col, newCell);
         this.commands.execute(cmd);
         
         this.recalculateDependents(row, col);

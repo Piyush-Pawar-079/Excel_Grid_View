@@ -10,7 +10,6 @@ export class EditCellCommand implements ICommand {
         private row: number,
         private col: number,
         private newCell: CellModel,
-        private onEvaluateNeeded: (row: number, col: number, rawValue: string) => CellModel
     ) {
         // deep copy if needed, or assume CellModel is replaced entirely
         this.previousCell = store.getCell(row, col);
