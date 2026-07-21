@@ -13,6 +13,12 @@ export interface IGridPointerAction {
     ): boolean;
 
     handlePointerUp?(
+        e: PointerEvent,
         grid: Grid
     ): boolean;
+
+    getCursor?(
+        e: PointerEvent,
+        grid: Grid
+    ): string | null
 }

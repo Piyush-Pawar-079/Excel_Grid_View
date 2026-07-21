@@ -5,6 +5,11 @@ import { ResizeColumnCommand } from '../commands/ResizeColumnCommand';
 export class ColumnResizeAction
 implements IGridPointerAction {
 
+    private active = false;
+    private col = -1;
+    private startX = 0;
+    private startWidth = 0;
+
     public handlePointerDown(
         e: PointerEvent,
         grid: Grid
@@ -26,6 +31,8 @@ implements IGridPointerAction {
             return false;
         }
 
+
+
         let currentX =
             grid.viewport.headerWidth -
             grid.viewport.scrollX;
@@ -43,11 +50,17 @@ implements IGridPointerAction {
                 Math.abs(x - currentX) < 5
             ) {
 
-                grid.resizeMode = 'col';
-                grid.resizeIndex = c;
-                grid.resizeStartPos = e.clientX;
-                grid.resizeStartSize =
-                    grid.store.getColumnWidth(c);
+                // grid.resizeMode = 'col';
+                this.active = true;
+
+                // grid.resizeIndex = c;
+                this.col = c;
+
+                // grid.resizeStartPos = e.clientX;
+                this.startX = e.clientX;
+
+                // grid.resizeStartSize = grid.store.getColumnWidth(c);
+                this.startWidth = grid.store.getColumnWidth(c);
 
                 return true;
             }
@@ -62,7 +75,8 @@ implements IGridPointerAction {
     ): boolean {
 
         if (
-            grid.resizeMode !== 'col'
+            // grid.resizeMode !== 'col'
+            !this.active
         ) {
             return false;
         }
@@ -72,16 +86,19 @@ implements IGridPointerAction {
 
         const diff =
             e.clientX -
-            grid.resizeStartPos;
+            // grid.resizeStartPos;
+            this.startX;
 
         const newSize =
             Math.max(
                 40,
-                grid.resizeStartSize + diff
+                // grid.resizeStartSize + diff
+                this.startWidth + diff
             );
 
         grid.store.setColumnWidth(
-            grid.resizeIndex,
+            // grid.resizeIndex,
+            this.col,
             newSize
         );
 
@@ -92,38 +109,55 @@ implements IGridPointerAction {
     }
 
     public handlePointerUp(
+        e: PointerEvent,
         grid: Grid
     ): boolean {
 
         if (
-            grid.resizeMode !== 'col'
+            // grid.resizeMode !== 'col'
+            !this.active
         ) {
             return false;
         }
 
         const finalSize =
             grid.store.getColumnWidth(
-                grid.resizeIndex
+                // grid.resizeIndex
+                this.col
             );
 
         grid.store.setColumnWidth(
-            grid.resizeIndex,
-            grid.resizeStartSize
+            // grid.resizeIndex,
+            this.col,
+            // grid.resizeStartSize
+            this.startWidth
         );
 
         grid.commands.execute(
             new ResizeColumnCommand(
                 grid.store,
-                grid.resizeIndex,
-                grid.resizeStartSize,
+                // grid.resizeIndex,
+                this.col,
+                // grid.resizeStartSize,
+                this.startWidth,
                 finalSize
             )
         );
 
-        grid.resizeMode = null;
-
+        // grid.resizeMode = null;
         grid.updateUI();
-
+        this.active = false;
         return true;
     }
+
+    // getCursor(e: PointerEvent, grid: Grid): string | null {
+    //     const { offsetX, offsetY } = e;
+    //     if (offsetY < grid.viewport.headerHeight && offsetX >= grid.viewport.headerWidth) {
+    //         // if (this.colResizeHandleAt(offsetX) >= 0) 
+    //         if(this.col >= 0)
+    //             return "col-resize";
+    //     }
+    //     return null;
+    // }
+
 }

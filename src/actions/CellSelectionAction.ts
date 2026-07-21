@@ -4,6 +4,8 @@ import { IGridPointerAction } from './IGridPointerAction';
 export class CellSelectionAction
 implements IGridPointerAction {
 
+    private active = false;
+
     public handlePointerDown(
         e: PointerEvent,
         grid: Grid
@@ -28,7 +30,8 @@ implements IGridPointerAction {
             return false;
         }
 
-        grid.dragMode = 'cell';
+        // grid.dragMode = 'cell';
+        this.active = true;
 
         grid.selection.beginSelection(
             cellPos.row,
@@ -46,7 +49,8 @@ implements IGridPointerAction {
     ): boolean {
 
         if (
-            grid.dragMode !== 'cell'
+            // grid.dragMode !== 'cell'
+            !this.active 
         ) {
             return false;
         }
@@ -81,19 +85,30 @@ implements IGridPointerAction {
     }
 
     public handlePointerUp(
+        e: PointerEvent,
         grid: Grid
     ): boolean {
 
         if (
-            grid.dragMode !== 'cell'
+            // grid.dragMode !== 'cell'
+            !this.active
         ) {
             return false;
         }
 
-        grid.dragMode = null;
+        // grid.dragMode = null;
 
         grid.selection.endSelection();
-
+        this.active = false;
         return true;
+    }
+
+    getCursor(e: PointerEvent, grid: Grid): string | null {
+        const { offsetX, offsetY } = e;
+        const { headerWidth, headerHeight } = grid.viewport;
+        if (offsetX >= headerWidth && offsetY >= headerHeight) {
+            return "cell";
+        }
+        return null;
     }
 }

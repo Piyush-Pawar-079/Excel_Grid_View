@@ -3,6 +3,8 @@ import { IGridPointerAction } from '../actions/IGridPointerAction';
 
 export class PointerHandler {
 
+    private activeHandler: IGridPointerAction | null = null;
+
     constructor(
         private actions: IGridPointerAction[]
     ) {}
@@ -19,7 +21,8 @@ export class PointerHandler {
                     e,
                     grid
                 )
-            ) {
+            ) { 
+                this.activeHandler = action;
                 return;
             }
         }
@@ -30,32 +33,47 @@ export class PointerHandler {
         grid: Grid
     ) {
 
+        if (this.activeHandler != null) {
+            this.activeHandler.handlePointerMove!(e, grid);
+        }
+
         for (const action of this.actions) {
 
             if (
-                action.handlePointerMove?.(
-                    e,
-                    grid
-                )
+                action.getCursor?.(e, grid)
             ) {
-                return;
+                const cursor = action.getCursor?.(e, grid);
+                if (cursor) {
+                    grid.canvas.style.cursor = cursor;
+                    return
+                }
             }
         }
     }
 
     public handlePointerUp(
+        e: PointerEvent,
         grid: Grid
     ) {
+
+        if (this.activeHandler != null) {
+            this.activeHandler.handlePointerUp!(e, grid);
+        }
 
         for (const action of this.actions) {
 
             if (
-                action.handlePointerUp?.(
-                    grid
-                )
+                action.getCursor?.(e, grid)
             ) {
-                return;
+                const cursor = action.getCursor?.(e, grid);
+                if(cursor)
+                    grid.canvas.style.cursor = cursor;
+                    return;
             }
         }
+    }
+
+    public onMouseLeave(grid: Grid): void{
+            grid.canvas.style.cursor = "default";
     }
 }

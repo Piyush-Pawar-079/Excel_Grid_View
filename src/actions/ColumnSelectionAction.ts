@@ -4,6 +4,8 @@ import { IGridPointerAction } from './IGridPointerAction';
 export class ColumnSelectionAction
 implements IGridPointerAction {
 
+    private active = false;
+
     public handlePointerDown(
         e: PointerEvent,
         grid: Grid
@@ -25,9 +27,9 @@ implements IGridPointerAction {
             return false;
         }
 
-        if (grid.resizeMode) {
-            return false;
-        }
+        // if (grid.resizeMode) {
+        //     return false;
+        // }
 
         const cellPos =
             grid.viewport.getCellAt(
@@ -49,7 +51,8 @@ implements IGridPointerAction {
             cellPos.col
         );
 
-        grid.dragMode = 'col';
+        // grid.dragMode = 'col';
+        this.active = true;
 
         grid.updateUI();
 
@@ -62,7 +65,8 @@ implements IGridPointerAction {
     ): boolean {
 
         if (
-            grid.dragMode !== 'col'
+            // grid.dragMode !== 'col'
+            !this.active
         ) {
             return false;
         }
@@ -94,19 +98,21 @@ implements IGridPointerAction {
     }
 
     public handlePointerUp(
+        e: PointerEvent,
         grid: Grid
     ): boolean {
 
         if (
-            grid.dragMode !== 'col'
+            // grid.dragMode !== 'col'
+            !this.active
         ) {
             return false;
         }
 
-        grid.dragMode = null;
+        // grid.dragMode = null;
 
         grid.selection.endSelection();
-
+        this.active = false;
         return true;
     }
 }

@@ -5,6 +5,11 @@ import { ResizeRowCommand } from '../commands/ResizeRowCommand';
 export class RowResizeAction
 implements IGridPointerAction {
 
+    private active = false;
+    private row = -1;
+    private startY = 0;
+    private startHeight = 0;
+
     public handlePointerDown(
         e: PointerEvent,
         grid: Grid
@@ -43,10 +48,17 @@ implements IGridPointerAction {
                 Math.abs(y - currentY) < 5
             ) {
 
-                grid.resizeMode = 'row';
-                grid.resizeIndex = r;
-                grid.resizeStartPos = e.clientY;
-                grid.resizeStartSize =
+                // grid.resizeMode = 'row';
+                this.active = true;
+
+                // grid.resizeIndex = r;
+                this.row = r;
+
+                // grid.resizeStartPos = e.clientY;
+                this.startY = e.clientY;
+
+                // grid.resizeStartSize =
+                this.startHeight =
                     grid.store.getRowHeight(r);
 
                 return true;
@@ -66,7 +78,8 @@ implements IGridPointerAction {
     ): boolean {
 
         if (
-            grid.resizeMode !== 'row'
+            // grid.resizeMode !== 'row'
+            !this.active
         ) {
             return false;
         }
@@ -76,16 +89,19 @@ implements IGridPointerAction {
 
         const diff =
             e.clientY -
-            grid.resizeStartPos;
+            // grid.resizeStartPos;
+            this.startY
 
         const newSize =
             Math.max(
                 24,
-                grid.resizeStartSize + diff
+                // grid.resizeStartSize + diff
+                this.startHeight + diff
             );
 
         grid.store.setRowHeight(
-            grid.resizeIndex,
+            // grid.resizeIndex,
+            this.row,
             newSize
         );
 
@@ -96,39 +112,58 @@ implements IGridPointerAction {
     }
 
     public handlePointerUp(
+        e: PointerEvent,
         grid: Grid
     ): boolean {
 
         if (
-            grid.resizeMode !== 'row'
+            // grid.resizeMode !== 'row'
+            !this.active
         ) {
             return false;
         }
 
         const finalSize =
             grid.store.getRowHeight(
-                grid.resizeIndex
+                // grid.resizeIndex
+                this.row
             );
 
         grid.store.setRowHeight(
-            grid.resizeIndex,
-            grid.resizeStartSize
+            // grid.resizeIndex,
+            this.row,
+            // grid.resizeStartSize
+            this.startHeight
         );
 
         const cmd =
             new ResizeRowCommand(
                 grid.store,
-                grid.resizeIndex,
-                grid.resizeStartSize,
+                // grid.resizeIndex,
+                this.row,
+                // grid.resizeStartSize,
+                this.startHeight,
                 finalSize
             );
 
         grid.commands.execute(cmd);
 
-        grid.resizeMode = null;
+        // grid.resizeMode = null;
+        this.active = false;
 
         grid.updateUI();
 
         return true;
     }
+
+    // getCursor(e: PointerEvent, grid: Grid): string | null {
+    //     const { offsetX, offsetY } = e;
+    //     if (offsetY >= grid.viewport.headerHeight && offsetX < grid.viewport.headerWidth) {
+    //         // if (this.colResizeHandleAt(offsetX) >= 0) 
+    //         if(this.row >= 0)
+    //             return "row-resize";
+    //     }
+    //     return null;
+    // }
+
 }

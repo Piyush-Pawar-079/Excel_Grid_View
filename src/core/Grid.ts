@@ -30,11 +30,11 @@ export class Grid {
     public evaluator: FormulaEvaluator;
 
     public pointerHandler: PointerHandler;
-    public dragMode: 'col' | 'row' | 'cell' | null = null;
-    public resizeMode: 'col' | 'row' | null = null;
-    public resizeIndex = -1;
-    public resizeStartPos = 0;
-    public resizeStartSize = 0;
+    // public dragMode: 'col' | 'row' | 'cell' | null = null;
+    // public resizeMode: 'col' | 'row' | null = null;
+    // public resizeIndex = -1;
+    // public resizeStartPos = 0;
+    // public resizeStartSize = 0;
 
     constructor(public store: IGridDataStore) {
         this.canvas = document.getElementById('gridCanvas') as HTMLCanvasElement;
@@ -186,7 +186,9 @@ export class Grid {
         this.canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e));
         this.canvas.addEventListener('pointermove', (e) => this.handlePointerMove(e));
         this.canvas.addEventListener('dblclick', (e) => this.handleDoubleClick(e));
-        window.addEventListener('pointerup', () => this.handlePointerUp());
+        // this.canvas.addEventListener('pointerleave', () => this.)
+        window.addEventListener('pointerup', (e) => this.handlePointerUp(e));
+
 
         // Undo/Redo buttons
         document.getElementById('undoBtn')?.addEventListener('click', () => {
@@ -288,9 +290,9 @@ export class Grid {
             .handlePointerMove(e, this);
     }
 
-    public handlePointerUp() {
+    public handlePointerUp(e: PointerEvent) {
         this.pointerHandler
-            .handlePointerUp(this);
+            .handlePointerUp(e, this);
     }
 
     public handleDoubleClick(e: MouseEvent) {
@@ -305,4 +307,9 @@ export class Grid {
             this.editor.beginEdit(cellPos.row, cellPos.col);
         }
     }
+
+    public handlePointerLeave(){
+        this.pointerHandler.onMouseLeave(this);
+    }
+
 }

@@ -4,17 +4,17 @@ import { IGridPointerAction } from './IGridPointerAction';
 export class CursorAction
 implements IGridPointerAction {
 
-    public handlePointerMove(
+    public getCursor(
         e: PointerEvent,
         grid: Grid
-    ): boolean {
+    ): string | null{
 
-        if (
-            grid.resizeMode ||
-            grid.dragMode
-        ) {
-            return false;
-        }
+        // if (
+        //     grid.resizeMode ||
+        //     grid.dragMode
+        // ) {
+        //     return false;
+        // }
 
         const rect =
             grid.canvas.getBoundingClientRect();
@@ -104,6 +104,6 @@ implements IGridPointerAction {
         grid.canvas.style.cursor =
             cursor;
 
-        return false;
+        return null;
     }
 }
